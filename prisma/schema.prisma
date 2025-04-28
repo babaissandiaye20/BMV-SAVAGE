@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  firstName String
+  lastName  String
+  phone     String?   @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  documents    Document[]
+  appointments Appointment[]
+  payments     Payment[]
+  messages     Message[]
+  RefreshToken RefreshToken[]
+}
+
+model Document {
+  id         String       @id @default(uuid())
+  userId     String
+  type       DocumentType
+  fileUrl    String
+  uploadedAt DateTime     @default(now())
+  deletedAt  DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Appointment {
+  id          String            @id @default(uuid())
+  userId      String
+  scheduledAt DateTime
+  location    String
+  status      AppointmentStatus
+  createdAt   DateTime          @default(now())
+  deletedAt   DateTime?
+
+  user     User      @relation(fields: [userId], references: [id])
+  payments Payment[]
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  userId        String
+  appointmentId String
+  paymentModeId String
+  status        PaymentStatus
+  transactionId String
+  amount        Decimal       @db.Decimal(10, 2)
+  createdAt     DateTime      @default(now())
+  deletedAt     DateTime?
+
+  user        User        @relation(fields: [userId], references: [id])
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+  paymentMode PaymentMode @relation(fields: [paymentModeId], references: [id])
+}
+
+model PaymentMode {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  payments Payment[]
+}
+
+model Message {
+  id        String    @id @default(uuid())
+  userId    String
+  content   String
+  isAdmin   Boolean
+  sentAt    DateTime  @default(now())
+  deletedAt DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model BlacklistedToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  expiresAt DateTime
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum DocumentType {
+  LICENSE
+  TITLE
+  RECEIPT
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+}
+
+enum PaymentStatus {
+  INITIATED
+  PAID
+  FAILED
+}
