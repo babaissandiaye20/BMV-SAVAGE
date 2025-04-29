@@ -29,6 +29,7 @@ export class AuthService {
       where: { email, deletedAt: null },
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new HttpException(
         this.responseService.unauthorized('Identifiants invalides'),
@@ -42,6 +43,18 @@ export class AuthService {
   async login(email: string, password: string) {
     const user = await this.validateUser(email, password);
 
+    if (!user.isPhoneVerified) {
+      throw new HttpException(
+        this.responseService.badRequest(
+          [
+            "Votre compte n'est pas encore activé. Veuillez vérifier votre numéro de téléphone.",
+          ],
+          'Compte inactif',
+        ),
+        400,
+      );
+    }
+
     const token = await this.generateToken(user.id);
     const refreshToken = await this.refreshTokenService.create(user.id);
 
@@ -51,7 +64,7 @@ export class AuthService {
         token,
         refreshToken,
       },
-      'Successful login',
+      'Connexion réussie',
     );
   }
 
@@ -66,12 +79,15 @@ export class AuthService {
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const decoded = this.jwtService.decode(token);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (!decoded || typeof decoded !== 'object' || !decoded.exp) {
       throw new BadRequestException('Token invalid');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     await this.blacklistService.blacklist(token, new Date(decoded.exp * 1000));
 
     return this.responseService.success(null, 'Déconnexion réussie');
