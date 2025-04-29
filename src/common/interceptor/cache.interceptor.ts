@@ -8,15 +8,15 @@ import { Observable, from } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
 import { RedisService } from '../../redis/redis.service';
-import { CACHE_PREFIX_KEY } from '../decorator/cache-prefix.decorator';
+import { CACHE_PREFIX_KEY } from '../decorator/cache/cache-prefix.decorator';
 import {
   CACHEABLE_KEY,
   CacheableOptions,
-} from '../decorator/cacheable.decorator';
+} from '../decorator/cache/cacheable.decorator';
 import {
   CACHE_EVICT_KEY,
   CacheEvictOptions,
-} from '../decorator/cache-evict.decorator';
+} from '../decorator/cache/cache-evict.decorator';
 
 @Injectable()
 export class CacheInterceptor implements NestInterceptor {
@@ -67,8 +67,9 @@ export class CacheInterceptor implements NestInterceptor {
           if (cached !== null) return from([cached]);
 
           return next.handle().pipe(
-            tap((result) => {
-              this.redisService.set(fullKey, result, cacheable.ttl);
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            tap(async (result) => {
+              await this.redisService.set(fullKey, result, cacheable.ttl);
             }),
           );
         }),

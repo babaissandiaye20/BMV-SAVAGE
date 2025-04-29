@@ -8,15 +8,17 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  firstName String
-  lastName  String
-  phone     String?   @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  id              String    @id @default(uuid())
+  email           String    @unique
+  firstName       String
+  lastName        String
+  isPhoneVerified Boolean   @default(false)
+  codeOtp         String? // OTP temporaire envoyé par SMS
+  phone           String    @unique
+  password        String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
 
   documents    Document[]
   appointments Appointment[]
