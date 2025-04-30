@@ -1,3 +1,4 @@
+// src/auth/auth.module.ts
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from '../prisma/prisma.module';
@@ -9,17 +10,17 @@ import { BlacklistTokenService } from './blacklist-token/blacklist-token.service
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { ResponseService } from '../validation/exception/response/response.service';
 import { AuthController } from './auth.controller';
-
+import { JwtAuthGuard } from './jwt-auth/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     PrismaModule,
     UserModule,
     ConfigModule,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({
+      useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
         signOptions: {
           expiresIn: config.get<string>('JWT_EXPIRES_IN', '15m'),
@@ -34,8 +35,12 @@ import { AuthController } from './auth.controller';
     BlacklistTokenService,
     RefreshTokenService,
     ResponseService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard, // 👈 Guard global ici
+    },
   ],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

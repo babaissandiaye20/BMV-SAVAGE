@@ -19,7 +19,6 @@ export class BlacklistTokenService {
     });
   }
 
-
   async isBlacklisted(token: string): Promise<boolean> {
     const blacklisted = await this.prisma.blacklistedToken.findUnique({
       where: { token },

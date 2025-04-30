@@ -12,8 +12,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { Public } from '../common/decorator/public.decorator';
 
 @ApiTags('Users')
+@Public()
 @Controller('users')
 export class UserController {
   constructor(private readonly usersService: UserService) {}

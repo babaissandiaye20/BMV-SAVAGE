@@ -15,6 +15,9 @@ import { UserService } from './user/user.service';
 import { TwilioService } from './sms/twilio/twilio.service';
 import { SmsModule } from './sms/sms.module';
 import { AuthModule } from './auth/auth.module';
+import { PaymentModeService } from './payment-mode/payment-mode.service';
+import { PaymentModeController } from './payment-mode/payment-mode.controller';
+import { PaymentModeModule } from './payment-mode/payment-mode.module';
 
 @Module({
   imports: [
@@ -32,8 +35,9 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     SmsModule,
     AuthModule,
+    PaymentModeModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, PaymentModeController],
   providers: [
     AppService,
     PrismaService,
@@ -43,6 +47,7 @@ import { AuthModule } from './auth/auth.module';
     ResponseService,
     UserService,
     TwilioService,
+    PaymentModeService,
   ],
 })
 export class AppModule {}
