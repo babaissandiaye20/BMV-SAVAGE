@@ -78,4 +78,20 @@ export class ResponseService {
       timestamp: new Date().toISOString(),
     };
   }
+  inactiveAccount(userId: string): Response<any> {
+    return {
+      statusCode: 400,
+      message: 'Compte inactif',
+      errors: [
+        "Votre compte n'est pas encore activé. Veuillez vérifier votre numéro de téléphone.",
+      ],
+      data: {
+        user: {
+          id: userId,
+        },
+      },
+      timestamp: new Date().toISOString(),
+    };
+  }
+
 }

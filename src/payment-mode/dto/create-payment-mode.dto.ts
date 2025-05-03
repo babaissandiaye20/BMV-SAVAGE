@@ -11,7 +11,7 @@ export class CreatePaymentModeDto {
   @IsString()
   @IsNotEmpty()
   @Unique('paymentMode', 'name', {
-  message: 'Payment mode name already exists',
+    message: 'Payment mode name already exists',
   })
   name: string;
 }

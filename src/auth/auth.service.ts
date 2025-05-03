@@ -45,16 +45,10 @@ export class AuthService {
 
     if (!user.isPhoneVerified) {
       throw new HttpException(
-        this.responseService.badRequest(
-          [
-            "Votre compte n'est pas encore activé. Veuillez vérifier votre numéro de téléphone.",
-          ],
-          'Compte inactif',
-        ),
+        this.responseService.inactiveAccount(user.id),
         400,
       );
     }
-
     const token = await this.generateToken(user.id);
     const refreshToken = await this.refreshTokenService.create(user.id);
 
