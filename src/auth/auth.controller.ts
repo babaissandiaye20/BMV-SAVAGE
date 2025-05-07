@@ -1,4 +1,3 @@
-// src/auth/auth.controller.ts
 import {
   Controller,
   Post,
@@ -9,6 +8,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { Public } from '../common/decorator/public.decorator';
 
 @ApiTags('Auth')
@@ -16,8 +16,6 @@ import { Public } from '../common/decorator/public.decorator';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   @Public()
   @Post('login')
   @ApiOperation({ summary: 'Connexion simple' })
@@ -41,9 +39,22 @@ export class AuthController {
   }
 
   @Public()
+  @Post('request-password-reset')
+  @ApiOperation({ summary: 'Demander un code de réinitialisation de mot de passe' })
+  @ApiResponse({ status: 200, description: 'Code envoyé avec succès' })
+  requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
+    return this.authService.requestPasswordReset(dto.email);
+  }
+
+  @Public()
   @Post('reset-password')
-  @ApiOperation({ summary: 'Réinitialiser le mot de passe (à implémenter)' })
+  @ApiOperation({ summary: 'Réinitialiser le mot de passe avec le code reçu' })
+  @ApiResponse({ status: 200, description: 'Mot de passe réinitialisé avec succès' })
   resetPassword(@Body() dto: ResetPasswordDto) {
-    return { message: 'Reset password functionality pending.' };
+    return this.authService.resetPassword(
+      dto.email,
+      dto.code,
+      dto.newPassword,
+    );
   }
 }

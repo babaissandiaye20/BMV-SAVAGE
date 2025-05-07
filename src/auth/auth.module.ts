@@ -12,12 +12,14 @@ import { ResponseService } from '../validation/exception/response/response.servi
 import { AuthController } from './auth.controller';
 import { JwtAuthGuard } from './jwt-auth/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { SmsModule } from '../sms/sms.module';
 
 @Module({
   imports: [
     PrismaModule,
     UserModule,
     ConfigModule,
+    SmsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({

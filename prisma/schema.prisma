@@ -41,11 +41,14 @@ model Document {
 model Appointment {
   id          String            @id @default(uuid())
   userId      String
-  scheduledAt DateTime
-  location    String
-  status      AppointmentStatus
+  vin         String // Numéro d'identification du véhicule
+  vehicleType String // Type de véhicule (ex. voiture, camion)
+  titleNumber String // Numéro du titre
+  scheduledAt String? // Date et heure du rendez-vous
+  location    String? // Lieu du rendez-vous
+  status      AppointmentStatus // Statut du rendez-vous
   createdAt   DateTime          @default(now())
-  deletedAt   DateTime?
+  deletedAt   String?
 
   user     User      @relation(fields: [userId], references: [id])
   payments Payment[]

@@ -1,4 +1,3 @@
-// src/payment-mode/payment-mode.controller.ts
 import {
   Controller,
   Get,
@@ -19,17 +18,14 @@ import { CreatePaymentModeDto } from './dto/create-payment-mode.dto';
 import { UpdatePaymentModeDto } from './dto/update-payment-mode.dto';
 
 @ApiTags('Payment Modes')
-@ApiBearerAuth()
+@ApiBearerAuth('access-token')
 @Controller('payment-modes')
 export class PaymentModeController {
   constructor(private readonly paymentModeService: PaymentModeService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new payment mode' })
-  @ApiResponse({
-    status: 201,
-    description: 'Payment mode created successfully.',
-  })
+  @ApiResponse({ status: 201, description: 'Payment mode created successfully.' })
   create(@Body() createPaymentModeDto: CreatePaymentModeDto) {
     return this.paymentModeService.create(createPaymentModeDto);
   }

@@ -111,7 +111,6 @@ export class UserService {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw this.responseService.notFound('User not found.');
     }
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await this.smsService.verifyOtp(user.phone, dto.code);
 

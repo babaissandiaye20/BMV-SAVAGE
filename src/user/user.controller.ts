@@ -7,10 +7,15 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+} from '@nestjs/swagger';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-import { UserService } from './user.service';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { Public } from '../common/decorator/public.decorator';
 
@@ -56,6 +61,7 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
+
   @Post(':id/send-otp')
   @ApiOperation({ summary: 'Send OTP to user phone' })
   @ApiResponse({ status: 200, description: 'OTP sent to user.' })

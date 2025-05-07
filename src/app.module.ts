@@ -18,6 +18,15 @@ import { AuthModule } from './auth/auth.module';
 import { PaymentModeService } from './payment-mode/payment-mode.service';
 import { PaymentModeController } from './payment-mode/payment-mode.controller';
 import { PaymentModeModule } from './payment-mode/payment-mode.module';
+import { UploadModule } from './upload/upload.module';
+import { UploadService } from './upload/upload.service';
+import { DocumentService } from './document/document.service';
+import { DocumentModule } from './document/document.module';
+import { PaymentModule } from './payment/payment.module';
+import { AppointmentModule } from './appointment/appointment.module';
+import { AppointmentController } from './appointment/appointment.controller';
+import { AppointmentService } from './appointment/appointment.service';
+
 
 @Module({
   imports: [
@@ -36,8 +45,12 @@ import { PaymentModeModule } from './payment-mode/payment-mode.module';
     SmsModule,
     AuthModule,
     PaymentModeModule,
+    UploadModule,
+    DocumentModule,
+    PaymentModule,
+    AppointmentModule,
   ],
-  controllers: [AppController, PaymentModeController],
+  controllers: [AppController, PaymentModeController, AppointmentController],
   providers: [
     AppService,
     PrismaService,
@@ -48,6 +61,9 @@ import { PaymentModeModule } from './payment-mode/payment-mode.module';
     UserService,
     TwilioService,
     PaymentModeService,
+    UploadService,
+    DocumentService,
+    AppointmentService,
   ],
 })
 export class AppModule {}

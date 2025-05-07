@@ -6,6 +6,9 @@ import { CacheInterceptor as CustomCacheInterceptor } from './common/interceptor
 import { ValidationService } from './validation/validation.service';
 //import { NestExpressApplication } from '@nestjs/platform-express';
 //import { join } from 'path';
+// src/main.ts
+// ← ajoute cette ligne en haut
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,16 +22,12 @@ async function bootstrap() {
     new CustomCacheInterceptor(reflector, redisService),
   );
 
-  const config: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
-
+  // main.ts
+  const config = new DocumentBuilder()
     .setTitle('User Management API')
-
     .setDescription('API for managing users')
-
     .setVersion('1.0')
-
     .addTag('users')
-
     .addBearerAuth(
       {
         type: 'http',
@@ -37,10 +36,10 @@ async function bootstrap() {
         name: 'Authorization',
         in: 'header',
       },
-      'access-token',
+      'access-token', // <-- C’est ça le nom important
     )
-
     .build();
+
 
   const document = SwaggerModule.createDocument(app, config);
 
