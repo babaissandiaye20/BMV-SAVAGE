@@ -177,9 +177,6 @@ export class AuthService {
       },
     });
 
-    return this.responseService.success(
-      null,
-      'Password reset successfully',
-    );
+    return this.responseService.success(null, 'Password reset successfully');
   }
 }

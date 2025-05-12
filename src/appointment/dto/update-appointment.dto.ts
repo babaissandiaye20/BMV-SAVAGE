@@ -18,6 +18,11 @@ export class UpdateAppointmentDto {
   @IsOptional()
   titleNumber?: string;
 
+  @ApiProperty({ example: 'REC123456', description: 'Numéro de reçu', required: false })
+  @IsString()
+  @IsOptional()
+  receiptNumber?: string;
+
   @ApiProperty({ example: '2023-06-15T14:00:00', description: 'Date et heure du rendez-vous', required: false })
   @IsString()
   @IsOptional()

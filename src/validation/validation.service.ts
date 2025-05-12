@@ -5,6 +5,9 @@ import { ValidationError } from 'class-validator';
 import { ExceptionService } from './exception/exception.service';
 @Injectable()
 export class ValidationService extends ValidationPipe {
+  // Make options accessible for testing
+  readonly options: ValidationPipeOptions;
+
   constructor(private readonly exceptionService: ExceptionService) {
     const options: ValidationPipeOptions = {
       whitelist: true,
@@ -22,5 +25,6 @@ export class ValidationService extends ValidationPipe {
       },
     };
     super(options);
+    this.options = options;
   }
 }

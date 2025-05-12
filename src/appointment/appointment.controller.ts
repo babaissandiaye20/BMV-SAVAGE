@@ -71,4 +71,16 @@ export class AppointmentController {
   ) {
     return this.appointmentService.update(params.id, updateAppointmentDto);
   }
+  @Get('user/:userId/pending/no-payment')
+  @ApiOperation({
+    summary: 'Get pending appointments without payments by user ID',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Pending appointments without payments returned',
+  })
+  getPendingAppointmentsWithoutPayment(@Param('userId') userId: string) {
+    return this.appointmentService.findPendingAppointmentsWithoutPayment(userId);
+  }
+
 }

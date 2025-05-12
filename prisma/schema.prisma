@@ -8,23 +8,22 @@ datasource db {
 }
 
 model User {
-  id              String    @id @default(uuid())
-  email           String    @unique
+  id              String         @id @default(uuid())
+  email           String         @unique
   firstName       String
   lastName        String
-  isPhoneVerified Boolean   @default(false)
-  codeOtp         String? // OTP temporaire envoyé par SMS
-  phone           String    @unique
+  phone           String         @unique
   password        String
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
   deletedAt       DateTime?
-
-  documents    Document[]
-  appointments Appointment[]
-  payments     Payment[]
-  messages     Message[]
-  RefreshToken RefreshToken[]
+  codeOtp         String?
+  isPhoneVerified Boolean        @default(false)
+  appointments    Appointment[]
+  documents       Document[]
+  messages        Message[]
+  payments        Payment[]
+  RefreshToken    RefreshToken[]
 }
 
 model Document {
@@ -34,24 +33,24 @@ model Document {
   fileUrl    String
   uploadedAt DateTime     @default(now())
   deletedAt  DateTime?
-
-  user User @relation(fields: [userId], references: [id])
+  user       User         @relation(fields: [userId], references: [id])
 }
 
 model Appointment {
-  id          String            @id @default(uuid())
-  userId      String
-  vin         String // Numéro d'identification du véhicule
-  vehicleType String // Type de véhicule (ex. voiture, camion)
-  titleNumber String // Numéro du titre
-  scheduledAt String? // Date et heure du rendez-vous
-  location    String? // Lieu du rendez-vous
-  status      AppointmentStatus // Statut du rendez-vous
-  createdAt   DateTime          @default(now())
-  deletedAt   String?
-
-  user     User      @relation(fields: [userId], references: [id])
-  payments Payment[]
+  id            String            @id @default(uuid())
+  userId        String
+  scheduledAt   String?
+  location      String?
+  status        AppointmentStatus
+  createdAt     DateTime          @default(now())
+  deletedAt     String?
+  titleNumber   String
+  vehicleType   String
+  vin           String
+  receiptNumber String?
+  issuesDate    String?
+  user          User              @relation(fields: [userId], references: [id])
+  payments      Payment[]
 }
 
 model Payment {
@@ -64,10 +63,9 @@ model Payment {
   amount        Decimal       @db.Decimal(10, 2)
   createdAt     DateTime      @default(now())
   deletedAt     DateTime?
-
-  user        User        @relation(fields: [userId], references: [id])
-  appointment Appointment @relation(fields: [appointmentId], references: [id])
-  paymentMode PaymentMode @relation(fields: [paymentModeId], references: [id])
+  appointment   Appointment   @relation(fields: [appointmentId], references: [id])
+  paymentMode   PaymentMode   @relation(fields: [paymentModeId], references: [id])
+  user          User          @relation(fields: [userId], references: [id])
 }
 
 model PaymentMode {
@@ -75,8 +73,7 @@ model PaymentMode {
   name      String    @unique
   createdAt DateTime  @default(now())
   deletedAt DateTime?
-
-  payments Payment[]
+  payments  Payment[]
 }
 
 model Message {
@@ -86,8 +83,7 @@ model Message {
   isAdmin   Boolean
   sentAt    DateTime  @default(now())
   deletedAt DateTime?
-
-  user User @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model BlacklistedToken {
@@ -103,8 +99,7 @@ model RefreshToken {
   expiresAt DateTime
   createdAt DateTime @default(now())
   revoked   Boolean  @default(false)
-
-  user User @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 enum DocumentType {

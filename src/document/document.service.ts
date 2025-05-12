@@ -7,6 +7,7 @@ import {
 } from '../upload/interfaces/upload.interface';
 import { ResponseService } from '../validation/exception/response/response.service';
 import { DocumentType } from '@prisma/client';
+import { DocumentResponseDto } from './dto/document-response.dto';
 
 @Injectable()
 export class DocumentService {
@@ -17,7 +18,7 @@ export class DocumentService {
     private readonly uploadService: FileStorageService,
   ) {}
 
-  async upload(userId: string, file: Express.Multer.File, type: DocumentType) {
+  async upload(userId: string, file: Express.Multer.File | null, type: DocumentType) {
     if (!file) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw this.responseService.badRequest(['Aucun fichier fourni']);
@@ -43,19 +44,37 @@ export class DocumentService {
       },
     });
 
-    return this.responseService.created(doc, 'Document uploadé');
+    const responseDto: DocumentResponseDto = {
+      ...doc,
+    };
+
+    return this.responseService.created(responseDto, 'Document uploadé');
   }
 
   async findAll(userId: string) {
     const docs = await this.prisma.document.findMany({
       where: { userId, deletedAt: null },
     });
-    return this.responseService.success(docs, 'Documents retrouvés');
+
+    const responseDtos: DocumentResponseDto[] = docs.map(doc => ({
+      ...doc,
+    }));
+
+    return this.responseService.success(responseDtos, 'Documents retrouvés');
   }
 
   async findOne(id: string) {
     const doc = await this.prisma.document.findUnique({ where: { id } });
-    return this.responseService.success(doc, 'Document trouvé');
+
+    if (!doc) {
+      return this.responseService.success(null, 'Document non trouvé');
+    }
+
+    const responseDto: DocumentResponseDto = {
+      ...doc,
+    };
+
+    return this.responseService.success(responseDto, 'Document trouvé');
   }
 
   async update(id: string, type: DocumentType) {
@@ -63,7 +82,12 @@ export class DocumentService {
       where: { id },
       data: { type },
     });
-    return this.responseService.success(doc, 'Document mis à jour');
+
+    const responseDto: DocumentResponseDto = {
+      ...doc,
+    };
+
+    return this.responseService.success(responseDto, 'Document mis à jour');
   }
 
   async remove(id: string) {
@@ -74,6 +98,10 @@ export class DocumentService {
 
     await this.uploadService.deleteFile(doc.fileUrl);
 
-    return this.responseService.success(doc, 'Document supprimé');
+    const responseDto: DocumentResponseDto = {
+      ...doc,
+    };
+
+    return this.responseService.success(responseDto, 'Document supprimé');
   }
 }

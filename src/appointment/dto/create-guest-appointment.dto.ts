@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsOptional } from 'class-validator';
 
 export class CreateGuestAppointmentDto {
   @ApiProperty({ example: 'John', description: 'Prénom du client' })
@@ -37,13 +37,18 @@ export class CreateGuestAppointmentDto {
   @IsNotEmpty()
   titleNumber: string;
 
-  @ApiProperty({ example: '2023-06-15T14:00:00', description: 'Date et heure du rendez-vous' })
+  @ApiProperty({ example: 'REC123456', description: 'Numéro de reçu', required: false })
   @IsString()
-  @IsNotEmpty()
-  scheduledAt: string;
+  @IsOptional()
+  receiptNumber?: string;
 
-  @ApiProperty({ example: '123 Main St, City, State', description: 'Lieu du rendez-vous' })
+  @ApiProperty({ example: '2023-06-15T14:00:00', description: 'Date et heure du rendez-vous', required: false })
   @IsString()
-  @IsNotEmpty()
-  location: string;
+  @IsOptional()
+  scheduledAt?: string;
+
+  @ApiProperty({ example: '123 Main St, City, State', description: 'Lieu du rendez-vous', required: false })
+  @IsString()
+  @IsOptional()
+  location?: string;
 }

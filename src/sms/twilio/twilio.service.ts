@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SmsServiceInterface } from '../sms.interface';
-import * as twilio from 'twilio';
+import twilio from 'twilio';
 
 @Injectable()
 export class TwilioService implements SmsServiceInterface {

@@ -24,6 +24,7 @@ export class AppointmentService {
         vin: data.vin,
         vehicleType: data.vehicleType,
         titleNumber: data.titleNumber,
+        receiptNumber: data.receiptNumber,
         scheduledAt: data.scheduledAt,
         location: data.location,
         status: AppointmentStatus.PENDING,
@@ -145,6 +146,7 @@ export class AppointmentService {
         vin: data.vin,
         vehicleType: data.vehicleType,
         titleNumber: data.titleNumber,
+        receiptNumber: data.receiptNumber,
         scheduledAt: data.scheduledAt,
         location: data.location,
         status: AppointmentStatus.PENDING,
@@ -155,6 +157,23 @@ export class AppointmentService {
     return this.responseService.created(
       appointment,
       'Guest appointment created with status PENDING.',
+    );
+  }
+  async findPendingAppointmentsWithoutPayment(userId: string) {
+    const appointments = await this.prisma.appointment.findMany({
+      where: {
+        userId,
+        status: AppointmentStatus.PENDING,
+        deletedAt: null,
+        payments: {
+          none: {}, // aucun paiement associé
+        },
+      },
+    });
+
+    return this.responseService.success(
+      appointments,
+      'Pending appointments without payments retrieved.',
     );
   }
 }

@@ -27,6 +27,8 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { AppointmentController } from './appointment/appointment.controller';
 import { AppointmentService } from './appointment/appointment.service';
 
+import { FirebaseAdminService } from './firebase/firebase-admin/firebase-admin.service';
+
 
 @Module({
   imports: [
@@ -64,6 +66,7 @@ import { AppointmentService } from './appointment/appointment.service';
     UploadService,
     DocumentService,
     AppointmentService,
+    FirebaseAdminService,
   ],
 })
 export class AppModule {}

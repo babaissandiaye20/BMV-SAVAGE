@@ -93,5 +93,4 @@ export class ResponseService {
       timestamp: new Date().toISOString(),
     };
   }
-
 }

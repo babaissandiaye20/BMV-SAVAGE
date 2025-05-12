@@ -18,11 +18,30 @@ import {
   ApiBody,
   ApiConsumes,
   ApiBearerAuth,
+  ApiResponse,
 } from '@nestjs/swagger';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { ParamDocumentIdDto } from './dto/param-document-id.dto';
+import { DocumentResponseDto } from './dto/document-response.dto';
 import { Request } from 'express';
+
+// Define a custom interface for the authenticated request
+interface AuthenticatedRequest extends Request {
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    isPhoneVerified: boolean;
+    codeOtp: string | null;
+    phone: string;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+  };
+}
 
 @ApiTags('Documents')
 @ApiBearerAuth('access-token')
@@ -46,26 +65,41 @@ export class DocumentController {
       },
     },
   })
+  @ApiResponse({
+    status: 201,
+    description: 'Document uploadé avec succès',
+    type: DocumentResponseDto,
+  })
+  @ApiResponse({ status: 400, description: 'Requête invalide' })
   upload(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: CreateDocumentDto,
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
   ) {
-    // @ts-expect-error
-    const userId = req.user['id'];
+    const userId = req.user.id;
     return this.documentService.upload(userId, file, body.type);
   }
 
   @Get()
   @ApiOperation({ summary: 'Lister les documents de l’utilisateur connecté' })
-  findAll(@Req() req: Request) {
-    // @ts-ignore
-    const userId = req.user['id'];
+  @ApiResponse({
+    status: 200,
+    description: 'Liste des documents de l\'utilisateur',
+    type: [DocumentResponseDto],
+  })
+  findAll(@Req() req: AuthenticatedRequest) {
+    const userId = req.user.id;
     return this.documentService.findAll(userId);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Récupérer un document par ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Document trouvé',
+    type: DocumentResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Document non trouvé' })
   findOne(@Param() params: ParamDocumentIdDto) {
     return this.documentService.findOne(params.id);
   }
@@ -73,6 +107,12 @@ export class DocumentController {
   @Patch(':id')
   @ApiOperation({ summary: 'Mettre à jour le type d’un document' })
   @ApiBody({ type: UpdateDocumentDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Document mis à jour',
+    type: DocumentResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Document non trouvé' })
   update(
     @Param() params: ParamDocumentIdDto,
     @Body() body: UpdateDocumentDto,
@@ -82,6 +122,12 @@ export class DocumentController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Supprimer un document (soft delete)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Document supprimé',
+    type: DocumentResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Document non trouvé' })
   remove(@Param() params: ParamDocumentIdDto) {
     return this.documentService.remove(params.id);
   }

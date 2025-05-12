@@ -1,4 +1,5 @@
 import {
+
   Controller,
   Post,
   Body,
@@ -40,7 +41,9 @@ export class AuthController {
 
   @Public()
   @Post('request-password-reset')
-  @ApiOperation({ summary: 'Demander un code de réinitialisation de mot de passe' })
+  @ApiOperation({
+    summary: 'Demander un code de réinitialisation de mot de passe',
+  })
   @ApiResponse({ status: 200, description: 'Code envoyé avec succès' })
   requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
     return this.authService.requestPasswordReset(dto.email);
@@ -49,12 +52,11 @@ export class AuthController {
   @Public()
   @Post('reset-password')
   @ApiOperation({ summary: 'Réinitialiser le mot de passe avec le code reçu' })
-  @ApiResponse({ status: 200, description: 'Mot de passe réinitialisé avec succès' })
+  @ApiResponse({
+    status: 200,
+    description: 'Mot de passe réinitialisé avec succès',
+  })
   resetPassword(@Body() dto: ResetPasswordDto) {
-    return this.authService.resetPassword(
-      dto.email,
-      dto.code,
-      dto.newPassword,
-    );
+    return this.authService.resetPassword(dto.email, dto.code, dto.newPassword);
   }
 }
