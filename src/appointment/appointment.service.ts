@@ -27,6 +27,7 @@ export class AppointmentService {
         receiptNumber: data.receiptNumber,
         scheduledAt: data.scheduledAt,
         location: data.location,
+        issuesDate: data.issuesDate,
         status: AppointmentStatus.PENDING,
       },
     });
@@ -149,6 +150,7 @@ export class AppointmentService {
         receiptNumber: data.receiptNumber,
         scheduledAt: data.scheduledAt,
         location: data.location,
+
         status: AppointmentStatus.PENDING,
       },
       include: { user: true },

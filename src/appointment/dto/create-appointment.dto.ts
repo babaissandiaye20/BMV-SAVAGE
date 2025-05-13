@@ -53,7 +53,13 @@ export class CreateAppointmentDto {
   @IsString()
   @IsOptional()
   location?: string;
-  @ApiProperty({ example: '04/10/2025', description: 'issues Date' })
   @IsOptional()
+  @IsString()
+  @ApiProperty({
+    example: '2025-10-04',
+    description: 'Date d’émission du reçu (si fourni)',
+    required: false,
+  })
   issuesDate?: string;
+
 }

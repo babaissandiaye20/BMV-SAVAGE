@@ -51,4 +51,5 @@ export class CreateGuestAppointmentDto {
   @IsString()
   @IsOptional()
   location?: string;
+  issuesDate: string | null;
 }

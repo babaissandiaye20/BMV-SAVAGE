@@ -1,5 +1,10 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { CreateGuestAppointmentDto } from './dto/create-guest-appointment.dto';
@@ -80,7 +85,8 @@ export class AppointmentController {
     description: 'Pending appointments without payments returned',
   })
   getPendingAppointmentsWithoutPayment(@Param('userId') userId: string) {
-    return this.appointmentService.findPendingAppointmentsWithoutPayment(userId);
+    return this.appointmentService.findPendingAppointmentsWithoutPayment(
+      userId,
+    );
   }
-
 }
