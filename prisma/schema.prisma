@@ -24,6 +24,7 @@ model User {
   messages        Message[]
   payments        Payment[]
   RefreshToken    RefreshToken[]
+  PaymentGroup    PaymentGroup[]
 }
 
 model Document {
@@ -53,19 +54,33 @@ model Appointment {
   payments      Payment[]
 }
 
-model Payment {
+model PaymentGroup {
   id            String        @id @default(uuid())
   userId        String
-  appointmentId String
-  paymentModeId String
+  transactionId String        @unique // ID de la transaction globale (ex. Stripe)
   status        PaymentStatus
-  transactionId String
-  amount        Decimal       @db.Decimal(10, 2)
+  totalAmount   Decimal       @db.Decimal(10, 2)
   createdAt     DateTime      @default(now())
   deletedAt     DateTime?
-  appointment   Appointment   @relation(fields: [appointmentId], references: [id])
-  paymentMode   PaymentMode   @relation(fields: [paymentModeId], references: [id])
   user          User          @relation(fields: [userId], references: [id])
+  payments      Payment[] // Relation avec les paiements individuels
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  userId         String
+  appointmentId  String
+  paymentModeId  String
+  status         PaymentStatus
+  transactionId  String?
+  amount         Decimal       @db.Decimal(10, 2)
+  createdAt      DateTime      @default(now())
+  deletedAt      DateTime?
+  appointment    Appointment   @relation(fields: [appointmentId], references: [id])
+  paymentMode    PaymentMode   @relation(fields: [paymentModeId], references: [id])
+  user           User          @relation(fields: [userId], references: [id])
+  PaymentGroup   PaymentGroup? @relation(fields: [paymentGroupId], references: [id])
+  paymentGroupId String?
 }
 
 model PaymentMode {

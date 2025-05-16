@@ -8,9 +8,10 @@ export class PaymentProcessorFactory {
   constructor(private readonly stripeService: StripeService) {}
 
   getProcessor(provider: string): PaymentProcessor {
+    // @ts-ignore
     switch (provider.toLowerCase()) {
       case 'stripe':
-        // @ts-expect-error
+
         return this.stripeService;
 
       default:
