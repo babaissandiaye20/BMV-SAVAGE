@@ -72,7 +72,8 @@ export class UploadService implements FileStorageService {
         files.map((file) => this.uploadSingle(file, folder)),
       );
     } catch (error) {
-      this.logger.error(`Échec de l'upload batch: ${error.message}`);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      this.logger.error(`Échec de l'upload batch: ${error.nmessage}`);
       throw error;
     }
   }

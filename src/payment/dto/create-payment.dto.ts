@@ -20,7 +20,10 @@ export class CreatePaymentDto {
   @IsString({ each: true })
   appointmentIds: string[];
 
-  @ApiProperty({ description: 'ID du mode de paiement', example: 'payment-mode-uuid' })
+  @ApiProperty({
+    description: 'ID du mode de paiement',
+    example: 'payment-mode-uuid',
+  })
   @IsString()
   @IsNotEmpty()
   paymentModeId: string;

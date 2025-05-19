@@ -1,0 +1,901 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>salvage-inspection-backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">salvage-inspection-backend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >PaymentService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/payment/payment.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createPayment" >createPayment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllTransactions" >getAllTransactions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTransaction" >getTransaction</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTransactionsByUser" >getTransactionsByUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleStripeSuccess" >handleStripeSuccess</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(prisma: <a href="../injectables/PrismaService.html" target="_self">PrismaService</a>, factory: <a href="../injectables/PaymentProcessorFactory.html" target="_self">PaymentProcessorFactory</a>, responseService: <a href="../injectables/ResponseService.html" target="_self">ResponseService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/payment/payment.service.ts:9</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>prisma</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PrismaService.html" target="_self" >PrismaService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>factory</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PaymentProcessorFactory.html" target="_self" >PaymentProcessorFactory</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>responseService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ResponseService.html" target="_self" >ResponseService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createPayment"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createPayment</b></span>
+                        <a href="#createPayment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createPayment(dto: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="16"
+                                    class="link-to-prism">src/payment/payment.service.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllTransactions"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getAllTransactions</b></span>
+                        <a href="#getAllTransactions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllTransactions()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/payment/payment.service.ts:90</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTransaction"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getTransaction</b></span>
+                        <a href="#getTransaction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTransaction(transactionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="114"
+                                    class="link-to-prism">src/payment/payment.service.ts:114</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>transactionId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTransactionsByUser"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getTransactionsByUser</b></span>
+                        <a href="#getTransactionsByUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTransactionsByUser(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/payment/payment.service.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleStripeSuccess"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>handleStripeSuccess</b></span>
+                        <a href="#handleStripeSuccess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleStripeSuccess(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/payment/payment.service.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle Stripe success (appelé à la redirection après paiement Stripe en dev/test)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sessionId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
+import { PrismaService } from &#x27;../prisma/prisma.service&#x27;;
+import { ResponseService } from &#x27;../validation/exception/response/response.service&#x27;;
+import { AppointmentStatus, PaymentStatus } from &#x27;@prisma/client&#x27;;
+import Stripe from &#x27;stripe&#x27;;
+import { PaymentProcessorFactory } from &#x27;./payment-processor.factory&#x27;;
+
+@Injectable()
+export class PaymentService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly factory: PaymentProcessorFactory,
+    private readonly responseService: ResponseService,
+  ) {}
+
+  async createPayment(dto: any) {
+    if (dto.appointmentIds.length !&#x3D;&#x3D; dto.amounts.length) {
+      throw this.responseService.badRequest([
+        &#x27;appointmentIds and amounts must have the same length.&#x27;,
+      ]);
+    }
+
+    const appointments &#x3D; await this.prisma.appointment.findMany({
+      where: {
+        id: { in: dto.appointmentIds },
+        status: AppointmentStatus.PENDING,
+        deletedAt: null,
+      },
+      include: { payments: true },
+    });
+
+    if (appointments.length !&#x3D;&#x3D; dto.appointmentIds.length) {
+      throw this.responseService.badRequest([
+        &#x27;One or more appointments are invalid or not pending.&#x27;,
+      ]);
+    }
+
+    for (const appointment of appointments) {
+      const existingPayment &#x3D; await this.prisma.payment.findFirst({
+        where: {
+          appointmentId: appointment.id,
+          deletedAt: null,
+          status: PaymentStatus.PAID,
+        },
+      });
+
+      if (existingPayment) {
+        throw this.responseService.badRequest([
+          &#x60;Appointment ${appointment.id} already has a paid payment.&#x60;,
+        ]);
+      }
+    }
+
+    const paymentMode &#x3D; await this.prisma.paymentMode.findUnique({
+      where: { id: dto.paymentModeId },
+    });
+
+    if (!paymentMode || paymentMode.deletedAt) {
+      throw this.responseService.badRequest([&#x27;Invalid payment mode.&#x27;]);
+    }
+
+    const totalAmount &#x3D; dto.amounts.reduce((sum, amount) &#x3D;&gt; sum + amount, 0);
+
+    const processor &#x3D; this.factory.getProcessor(paymentMode.name);
+
+    if (!processor.createCheckoutSession) {
+      throw this.responseService.badRequest([
+        &#x60;createCheckoutSession is not supported by this processor&#x60;,
+      ]);
+    }
+
+    const session &#x3D; await processor.createCheckoutSession(
+      totalAmount,
+      dto.currency,
+      process.env.STRIPE_SUCCESS_URL!,
+      process.env.STRIPE_CANCEL_URL!,
+      {
+        userId: dto.userId,
+        appointmentIds: dto.appointmentIds.join(&#x27;,&#x27;),
+        paymentModeId: dto.paymentModeId,
+      }
+    );
+
+    return this.responseService.success(
+      { checkoutUrl: session.url },
+      &#x27;Redirection vers Stripe Checkout.&#x27;,
+    );
+  }
+
+  async getAllTransactions() {
+    const payments &#x3D; await this.prisma.payment.findMany({
+      where: { deletedAt: null },
+      include: { user: true, appointment: true, paymentMode: true },
+    });
+
+    return this.responseService.success(
+      payments,
+      &#x27;All transactions retrieved.&#x27;,
+    );
+  }
+
+  async getTransactionsByUser(userId: string) {
+    const payments &#x3D; await this.prisma.payment.findMany({
+      where: { userId, deletedAt: null },
+      include: { appointment: true, paymentMode: true },
+    });
+
+    return this.responseService.success(
+      payments,
+      &#x27;User transactions retrieved.&#x27;,
+    );
+  }
+
+  async getTransaction(transactionId: string) {
+    let payment &#x3D; await this.prisma.payment.findFirst({
+      where: { transactionId },
+      include: { user: true, appointment: true, paymentMode: true },
+    });
+
+    if (!payment) {
+      payment &#x3D; await this.prisma.payment.findUnique({
+        where: { id: transactionId },
+        include: { user: true, appointment: true, paymentMode: true },
+      });
+    }
+
+    if (!payment) {
+      // Debug
+      console.log(&#x27;Transaction recherchée:&#x27;, transactionId);
+      const payments &#x3D; await this.prisma.payment.findMany({});
+      console.log(&#x27;Toutes les transactions en base:&#x27;, payments.map(p &#x3D;&gt; ({id: p.id, transactionId: p.transactionId})));
+      throw this.responseService.notFound(&#x27;Transaction not found.&#x27;);
+    }
+
+    return this.responseService.success(
+      payment,
+      &#x27;Transaction details retrieved.&#x27;,
+    );
+  }
+
+  /**
+   * Handle Stripe success (appelé à la redirection après paiement Stripe en dev/test)
+   */
+  async handleStripeSuccess(sessionId: string) {
+    console.log(&#x27;&gt;&gt;&gt; [DEBUG CONTROLLER -&gt; SERVICE] sessionId reçu :&#x27;, sessionId);
+
+    const secretKey &#x3D; process.env.STRIPE_SECRET_KEY;
+    if (!secretKey) {
+      throw new Error(&#x27;STRIPE_SECRET_KEY is not defined&#x27;);
+    }
+    const stripe &#x3D; new Stripe(secretKey, {
+      apiVersion: &#x27;2025-04-30.basil&#x27;,
+    });
+
+    // 1. Récupérer la session Stripe
+    const stripeSession &#x3D; await stripe.checkout.sessions.retrieve(sessionId);
+
+    // 2. Vérifier que le paiement est effectué
+    if (stripeSession.payment_status !&#x3D;&#x3D; &#x27;paid&#x27;) {
+      throw this.responseService.badRequest([&#x27;Payment not completed.&#x27;]);
+    }
+
+    // 3. Anti-double création
+    let paymentGroup: any &#x3D; await this.prisma.paymentGroup.findUnique({
+      where: { transactionId: sessionId },
+      include: { payments: true }
+    });
+    if (paymentGroup) {
+      return this.responseService.success(
+        { paymentGroup },
+        &#x27;Paiement déjà enregistré.&#x27;
+      );
+    }
+
+    // 4. Extraire les metadata Stripe
+    const metadata &#x3D; stripeSession.metadata;
+    if (!metadata || !metadata.userId || !metadata.appointmentIds || !metadata.paymentModeId) {
+      throw this.responseService.badRequest([&#x27;Metadata manquante dans la session Stripe.&#x27;]);
+    }
+    const userId &#x3D; metadata.userId;
+    const appointmentIds &#x3D; metadata.appointmentIds.split(&#x27;,&#x27;);
+    const paymentModeId &#x3D; metadata.paymentModeId;
+
+    // 5. Vérifier les appointments concernés existent et pas supprimés
+    const appointments &#x3D; await this.prisma.appointment.findMany({
+      where: { id: { in: appointmentIds }, deletedAt: null },
+    });
+
+    if (!appointments || appointments.length &#x3D;&#x3D;&#x3D; 0) {
+      throw this.responseService.notFound(&#x27;Aucun rendez-vous trouvé pour cette transaction.&#x27;);
+    }
+
+    // 6. Calcul du total payé (Stripe retourne en centimes)
+    const totalAmount &#x3D; stripeSession.amount_total! / 100;
+
+    // 7. Création du PaymentGroup (SANS paymentModeId !)
+    paymentGroup &#x3D; await this.prisma.paymentGroup.create({
+      data: {
+        userId,
+        transactionId: sessionId,
+        status: PaymentStatus.PAID,
+        totalAmount,
+      },
+    });
+
+    if (!paymentGroup) {
+      throw this.responseService.notFound(&#x27;Erreur création PaymentGroup&#x27;);
+    }
+
+    // 8. Création des paiements individuels AVEC paymentModeId
+    console.log(&#x27;&gt;&gt;&gt; [DEBUG SERVICE] sessionId transmis à la création Payment :&#x27;, sessionId);
+    await Promise.all(
+      appointments.map((appointment) &#x3D;&gt;
+        this.prisma.payment.create({
+          data: {
+            userId,
+            appointmentId: appointment.id,
+            paymentModeId: paymentModeId,
+            amount: totalAmount / appointments.length,
+            status: PaymentStatus.PAID,
+            paymentGroupId: paymentGroup.id,
+            transactionId: sessionId, // &lt;&#x3D;&#x3D; EXCLUSIVEMENT camelCase !
+          },
+        })
+      ),
+    );
+
+    // 9. Recharge le PaymentGroup AVEC tous ses paiements
+    paymentGroup &#x3D; await this.prisma.paymentGroup.findUnique({
+      where: { id: paymentGroup.id },
+      include: { payments: true },
+    });
+
+    // Debug logs : à enlever en prod
+    const allPayments &#x3D; await this.prisma.payment.findMany({ where: { paymentGroupId: paymentGroup.id }});
+    console.log(&#x27;&gt;&gt;&gt; [DEBUG SERVICE] Payments juste après création :&#x27;, allPayments);
+
+    return this.responseService.success(
+      { paymentGroup },
+      &#x27;Paiement validé et enregistré.&#x27;
+    );
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'PaymentService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

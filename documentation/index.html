@@ -1,0 +1,412 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>salvage-inspection-backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">salvage-inspection-backend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content getting-started">
+                   <div class="content-data">
+
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
+
+<h1>Salvage Inspection Backend</h1>
+<h2>Description</h2>
+<p>The Salvage Inspection Backend is a comprehensive API service built with NestJS that manages vehicle salvage inspections. This system allows users to register, upload vehicle-related documents, schedule inspection appointments, make payments, and communicate with administrators.</p>
+<h3>Key Features</h3>
+<ul>
+<li>User authentication and authorization with JWT</li>
+<li>Document upload and management</li>
+<li>Appointment scheduling for vehicle inspections</li>
+<li>Payment processing with Stripe</li>
+<li>WhatsApp notifications with Evolution API</li>
+<li>Real-time caching with Redis</li>
+<li>Comprehensive API documentation with Swagger</li>
+</ul>
+<h2>Architecture</h2>
+<p>The application follows a modular architecture based on NestJS best practices:</p>
+<h3>Core Modules</h3>
+<ul>
+<li><strong>ConfigModule</strong>: Manages environment variables and application configuration</li>
+<li><strong>PrismaModule</strong>: Handles database operations using Prisma ORM</li>
+<li><strong>RedisModule</strong>: Provides caching capabilities using Redis</li>
+<li><strong>ValidationModule</strong>: Handles input validation and error responses</li>
+</ul>
+<h3>Feature Modules</h3>
+<ul>
+<li><strong>UserModule</strong>: Manages user registration, profiles, and authentication</li>
+<li><strong>AuthModule</strong>: Handles JWT authentication, token management, and authorization</li>
+<li><strong>DocumentModule</strong>: Manages document uploads and storage using Cloudinary</li>
+<li><strong>AppointmentModule</strong>: Handles scheduling and management of inspection appointments</li>
+<li><strong>PaymentModule</strong>: Processes payments using Stripe</li>
+<li><strong>SmsModule</strong>: Sends WhatsApp notifications using Evolution API</li>
+<li><strong>UploadModule</strong>: Handles file uploads and storage</li>
+</ul>
+<h3>Data Model</h3>
+<p>The application uses PostgreSQL with Prisma ORM and includes the following main entities:</p>
+<ul>
+<li><strong>User</strong>: Stores user information and authentication details</li>
+<li><strong>Document</strong>: Manages vehicle-related documents (licenses, titles, receipts)</li>
+<li><strong>Appointment</strong>: Tracks inspection appointments with vehicle details</li>
+<li><strong>Payment</strong>: Records payment transactions for appointments</li>
+<li><strong>PaymentMode</strong>: Defines available payment methods</li>
+<li><strong>Message</strong>: Stores communication between users and administrators</li>
+</ul>
+<h2>API Endpoints</h2>
+<h3>Authentication</h3>
+<ul>
+<li><strong>POST /auth/login</strong>: Authenticate a user and get JWT tokens</li>
+<li><strong>POST /auth/logout</strong>: Invalidate the current JWT token</li>
+<li><strong>POST /auth/refresh</strong>: Get a new JWT token using a refresh token</li>
+<li><strong>POST /auth/request-password-reset</strong>: Request a password reset code (sent via WhatsApp)</li>
+<li><strong>POST /auth/reset-password</strong>: Reset password using the verification code</li>
+</ul>
+<h3>Password Reset Flow</h3>
+<ol>
+<li>User requests a password reset by sending their email to <code>/auth/request-password-reset</code></li>
+<li>System sends a verification code to the user&#39;s WhatsApp</li>
+<li>User submits the verification code, old password, and new password to <code>/auth/reset-password</code></li>
+<li>System verifies the code and old password, then updates the password</li>
+</ol>
+<h2>WhatsApp Integration</h2>
+<p>The application uses Evolution API to send verification codes for password reset. This integration requires:</p>
+<ol>
+<li>A self-hosted Evolution API server or access to a hosted instance</li>
+<li>A WhatsApp account connected to Evolution API</li>
+<li>Proper configuration in the .env file (EVOLUTION_API_BASE_URL, EVOLUTION_API_INSTANCE, EVOLUTION_API_KEY, WHATSAPP_FROM_NUMBER)</li>
+</ol>
+<h3>About Evolution API</h3>
+<p>Evolution API is an open-source REST API for WhatsApp that allows you to send and receive messages without using the official WhatsApp Business API. It provides:</p>
+<ul>
+<li>Message sending and receiving</li>
+<li>Media handling (images, documents, etc.)</li>
+<li>Group management</li>
+<li>Status updates</li>
+<li>QR code authentication</li>
+</ul>
+<p>Being open-source and self-hosted, Evolution API can be a cost-effective alternative to commercial WhatsApp API providers.</p>
+<h2>Dependencies</h2>
+<h3>Core Dependencies</h3>
+<ul>
+<li><strong>NestJS (@nestjs/*)</strong>: Framework for building server-side applications</li>
+<li><strong>Prisma (@prisma/client)</strong>: ORM for database access</li>
+<li><strong>Redis (@nestjs-modules/ioredis)</strong>: In-memory data store for caching</li>
+<li><strong>JWT (@nestjs/jwt)</strong>: JSON Web Token implementation for authentication</li>
+<li><strong>Passport (@nestjs/passport)</strong>: Authentication middleware</li>
+<li><strong>Swagger (@nestjs/swagger)</strong>: API documentation</li>
+</ul>
+<h3>External Services</h3>
+<ul>
+<li><strong>Stripe (stripe)</strong>: Payment processing</li>
+<li><strong>Evolution API (axios)</strong>: WhatsApp messaging</li>
+<li><strong>Cloudinary (cloudinary)</strong>: Cloud-based image and file management</li>
+</ul>
+<h3>Utilities</h3>
+<ul>
+<li><strong>bcrypt</strong>: Password hashing</li>
+<li><strong>class-validator &amp; class-transformer</strong>: Input validation and transformation</li>
+<li><strong>date-fns</strong>: Date manipulation</li>
+<li><strong>uuid</strong>: Unique identifier generation</li>
+</ul>
+<h2>Project Setup</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js (v16+)</li>
+<li>npm or yarn</li>
+<li>PostgreSQL</li>
+<li>Redis</li>
+</ul>
+<h3>Installation</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Install dependencies
+$ npm install
+
+# Set up environment variables
+$ cp .env.example .env
+# Edit .env with your configuration
+
+# Run database migrations
+$ npx prisma migrate dev</code></pre></div><h3>Running the Application</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Development mode
+$ npm run start:dev
+
+# Production mode
+$ npm run start:prod</code></pre></div><h3>Testing</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Unit tests
+$ npm run test
+
+# E2E tests
+$ npm run test:e2e
+
+# Test coverage
+$ npm run test:cov</code></pre></div><h2>Docker Setup</h2>
+<p>The application is containerized using Docker and Docker Compose for easy deployment and development.</p>
+<h3>Docker Architecture</h3>
+<p>The Docker setup consists of three main services:</p>
+<ol>
+<li><strong>app</strong>: The NestJS application container</li>
+<li><strong>postgres</strong>: PostgreSQL database container</li>
+<li><strong>redis</strong>: Redis cache container</li>
+</ol>
+<p>All services are configured with appropriate environment variables and persistent volumes for data storage.</p>
+<h3>Prerequisites</h3>
+<ul>
+<li><a href="https://docs.docker.com/get-docker/">Docker</a></li>
+<li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
+</ul>
+<h3>Environment Variables</h3>
+<p>Copy the example environment file and update it with your own values:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ cp .env.example .env</code></pre></div><p>Required environment variables include:</p>
+<ul>
+<li>Database connection details</li>
+<li>Redis connection details</li>
+<li>JWT configuration</li>
+<li>Evolution API configuration</li>
+<li>Cloudinary API credentials</li>
+<li>Stripe API keys</li>
+</ul>
+<h3>Running with Docker Compose</h3>
+<p>To start the application and its dependencies:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ docker-compose up -d</code></pre></div><p>This will start three containers:</p>
+<ul>
+<li>The NestJS application (accessible at <a href="http://localhost:3000">http://localhost:3000</a>)</li>
+<li>PostgreSQL database</li>
+<li>Redis cache</li>
+</ul>
+<p>To stop the containers:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ docker-compose down</code></pre></div><p>To view logs:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ docker-compose logs -f app</code></pre></div><h3>Building the Docker Image</h3>
+<p>If you want to build the Docker image separately:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ docker build -t salvage-inspection-backend .</code></pre></div><h3>Testing the Docker Setup</h3>
+<p>A test script is provided to verify that the Docker setup works correctly:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ chmod +x test-docker.sh  # Make the script executable (if not already)
+$ ./test-docker.sh</code></pre></div><p>This script will:</p>
+<ol>
+<li>Build the Docker image</li>
+<li>Start the containers with Docker Compose</li>
+<li>Check if the application is running correctly</li>
+<li>Stop the containers</li>
+</ol>
+<h2>API Documentation</h2>
+<p>The API is documented using Swagger, which provides an interactive interface to explore and test the endpoints.</p>
+<h3>Accessing Swagger Documentation</h3>
+<p>When the application is running, you can access the Swagger documentation at:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">http://localhost:3000/api</code></pre></div><p>The Swagger UI provides:</p>
+<ul>
+<li>A list of all available endpoints</li>
+<li>Request and response schemas</li>
+<li>Authentication requirements</li>
+<li>The ability to test endpoints directly from the browser</li>
+</ul>
+<h3>Authentication</h3>
+<p>The API uses JWT (JSON Web Token) for authentication. To access protected endpoints:</p>
+<ol>
+<li>Register or login to obtain a JWT token</li>
+<li>Include the token in the Authorization header of your requests:<b>Example :</b><div><pre class="line-numbers"><code class="language-none">Authorization: Bearer &lt;your_token&gt;</code></pre></div></li>
+</ol>
+<h2>Development Guidelines</h2>
+<h3>Code Structure</h3>
+<ul>
+<li><strong>Controllers</strong>: Handle HTTP requests and define API endpoints</li>
+<li><strong>Services</strong>: Contain business logic and interact with the database</li>
+<li><strong>DTOs</strong>: Define data transfer objects for request/response validation</li>
+<li><strong>Entities</strong>: Map to database models</li>
+<li><strong>Modules</strong>: Group related functionality</li>
+</ul>
+<h3>Adding New Features</h3>
+<ol>
+<li>Create a new module: <code>nest generate module feature-name</code></li>
+<li>Create a controller: <code>nest generate controller feature-name</code></li>
+<li>Create a service: <code>nest generate service feature-name</code></li>
+<li>Define DTOs and entities</li>
+<li>Implement business logic in the service</li>
+<li>Expose endpoints in the controller</li>
+<li>Add the module to AppModule imports</li>
+</ol>
+<h2>Deployment</h2>
+<p>The application can be deployed to any environment that supports Docker containers. For production deployments, consider:</p>
+<ul>
+<li>Setting up a CI/CD pipeline</li>
+<li>Using container orchestration (Kubernetes, AWS ECS)</li>
+<li>Implementing proper monitoring and logging</li>
+<li>Setting up database backups</li>
+<li>Configuring HTTPS</li>
+</ul>
+<h2>Resources</h2>
+<ul>
+<li><a href="https://docs.nestjs.com">NestJS Documentation</a></li>
+<li><a href="https://www.prisma.io/docs">Prisma Documentation</a></li>
+<li><a href="https://docs.docker.com">Docker Documentation</a></li>
+<li><a href="https://stripe.com/docs/api">Stripe API Documentation</a></li>
+<li><a href="https://github.com/evolution-api/evolution-api">Evolution API Documentation</a></li>
+<li><a href="https://cloudinary.com/documentation">Cloudinary Documentation</a></li>
+</ul>
+<h2>License</h2>
+<p>This project is <a href="LICENSE">MIT licensed</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
