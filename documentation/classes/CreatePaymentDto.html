@@ -224,7 +224,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/payment/dto/create-payment.dto.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/payment/dto/create-payment.dto.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -301,7 +301,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/payment/dto/create-payment.dto.ts:38</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/payment/dto/create-payment.dto.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -339,7 +339,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/payment/dto/create-payment.dto.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/payment/dto/create-payment.dto.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -418,7 +418,10 @@ export class CreatePaymentDto {
   @IsString({ each: true })
   appointmentIds: string[];
 
-  @ApiProperty({ description: &#x27;ID du mode de paiement&#x27;, example: &#x27;payment-mode-uuid&#x27; })
+  @ApiProperty({
+    description: &#x27;ID du mode de paiement&#x27;,
+    example: &#x27;payment-mode-uuid&#x27;,
+  })
   @IsString()
   @IsNotEmpty()
   paymentModeId: string;

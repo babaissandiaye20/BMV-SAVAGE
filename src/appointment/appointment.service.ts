@@ -6,6 +6,7 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { CreateGuestAppointmentDto } from './dto/create-guest-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class AppointmentService {
@@ -134,6 +135,7 @@ export class AppointmentService {
           firstName: data.firstName,
           lastName: data.lastName,
           phone: data.phone,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           password: hashedPassword,
           isPhoneVerified: false, // Guest users are not verified by default
         },
@@ -143,6 +145,8 @@ export class AppointmentService {
     // Create the appointment
     const appointment = await this.prisma.appointment.create({
       data: {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        id: data.id ?? randomUUID(),
         userId: user.id,
         vin: data.vin,
         vehicleType: data.vehicleType,

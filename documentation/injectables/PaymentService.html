@@ -267,14 +267,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="16"
-                                    class="link-to-prism">src/payment/payment.service.ts:16</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="20"
+                                    class="link-to-prism">src/payment/payment.service.ts:20</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Crée la session Checkout Stripe (mais ne crée rien en base pour l’instant)</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -336,14 +338,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">src/payment/payment.service.ts:90</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/payment/payment.service.ts:105</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Liste tous les paiements (transactions)</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>    <code>unknown</code>
@@ -375,14 +379,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="114"
-                                    class="link-to-prism">src/payment/payment.service.ts:114</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">src/payment/payment.service.ts:135</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Détail transaction par ID (interne ou Stripe sessionId)</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -444,14 +450,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/payment/payment.service.ts:102</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/payment/payment.service.ts:120</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Liste les paiements par user</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -513,15 +521,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="144"
-                                    class="link-to-prism">src/payment/payment.service.ts:144</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/payment/payment.service.ts:171</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Handle Stripe success (appelé à la redirection après paiement Stripe en dev/test)</p>
+                        <div class="io-description"><p>Callback Stripe après succès (Redirection du front)
+C&#39;est ici qu&#39;on crée en base PaymentGroup + Payments</p>
 </div>
 
                             <div class="io-description">
@@ -581,8 +590,12 @@ export class PaymentService {
     private readonly prisma: PrismaService,
     private readonly factory: PaymentProcessorFactory,
     private readonly responseService: ResponseService,
-  ) {}
+  ) {
+  }
 
+  /**
+   * Crée la session Checkout Stripe (mais ne crée rien en base pour l’instant)
+   */
   async createPayment(dto: any) {
     if (dto.appointmentIds.length !&#x3D;&#x3D; dto.amounts.length) {
       throw this.responseService.badRequest([
@@ -590,6 +603,7 @@ export class PaymentService {
       ]);
     }
 
+    // Check appointments
     const appointments &#x3D; await this.prisma.appointment.findMany({
       where: {
         id: { in: dto.appointmentIds },
@@ -605,6 +619,7 @@ export class PaymentService {
       ]);
     }
 
+    // Check already paid
     for (const appointment of appointments) {
       const existingPayment &#x3D; await this.prisma.payment.findFirst({
         where: {
@@ -621,6 +636,7 @@ export class PaymentService {
       }
     }
 
+    // Check payment mode
     const paymentMode &#x3D; await this.prisma.paymentMode.findUnique({
       where: { id: dto.paymentModeId },
     });
@@ -629,8 +645,10 @@ export class PaymentService {
       throw this.responseService.badRequest([&#x27;Invalid payment mode.&#x27;]);
     }
 
+    // Total
     const totalAmount &#x3D; dto.amounts.reduce((sum, amount) &#x3D;&gt; sum + amount, 0);
 
+    // Get Stripe processor
     const processor &#x3D; this.factory.getProcessor(paymentMode.name);
 
     if (!processor.createCheckoutSession) {
@@ -639,6 +657,7 @@ export class PaymentService {
       ]);
     }
 
+    // Crée la session Stripe (pas de création PaymentGroup ici)
     const session &#x3D; await processor.createCheckoutSession(
       totalAmount,
       dto.currency,
@@ -648,6 +667,8 @@ export class PaymentService {
         userId: dto.userId,
         appointmentIds: dto.appointmentIds.join(&#x27;,&#x27;),
         paymentModeId: dto.paymentModeId,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        amounts: dto.amounts.join(&#x27;,&#x27;), // pour mapping montant/rdv
       }
     );
 
@@ -657,6 +678,9 @@ export class PaymentService {
     );
   }
 
+  /**
+   * Liste tous les paiements (transactions)
+   */
   async getAllTransactions() {
     const payments &#x3D; await this.prisma.payment.findMany({
       where: { deletedAt: null },
@@ -669,6 +693,9 @@ export class PaymentService {
     );
   }
 
+  /**
+   * Liste les paiements par user
+   */
   async getTransactionsByUser(userId: string) {
     const payments &#x3D; await this.prisma.payment.findMany({
       where: { userId, deletedAt: null },
@@ -681,12 +708,17 @@ export class PaymentService {
     );
   }
 
+  /**
+   * Détail transaction par ID (interne ou Stripe sessionId)
+   */
   async getTransaction(transactionId: string) {
+    // Recherche par Stripe sessionId (transactionId)
     let payment &#x3D; await this.prisma.payment.findFirst({
       where: { transactionId },
       include: { user: true, appointment: true, paymentMode: true },
     });
 
+    // Sinon recherche par id interne
     if (!payment) {
       payment &#x3D; await this.prisma.payment.findUnique({
         where: { id: transactionId },
@@ -695,10 +727,13 @@ export class PaymentService {
     }
 
     if (!payment) {
-      // Debug
+      // Debug log
       console.log(&#x27;Transaction recherchée:&#x27;, transactionId);
       const payments &#x3D; await this.prisma.payment.findMany({});
-      console.log(&#x27;Toutes les transactions en base:&#x27;, payments.map(p &#x3D;&gt; ({id: p.id, transactionId: p.transactionId})));
+      console.log(&#x27;Toutes les transactions en base:&#x27;, payments.map(p &#x3D;&gt; ({
+        id: p.id,
+          transactionId: p.transactionId,
+      })));
       throw this.responseService.notFound(&#x27;Transaction not found.&#x27;);
     }
 
@@ -709,62 +744,55 @@ export class PaymentService {
   }
 
   /**
-   * Handle Stripe success (appelé à la redirection après paiement Stripe en dev/test)
+   * Callback Stripe après succès (Redirection du front)
+   * C&#x27;est ici qu&#x27;on crée en base PaymentGroup + Payments
    */
   async handleStripeSuccess(sessionId: string) {
-    console.log(&#x27;&gt;&gt;&gt; [DEBUG CONTROLLER -&gt; SERVICE] sessionId reçu :&#x27;, sessionId);
-
     const secretKey &#x3D; process.env.STRIPE_SECRET_KEY;
-    if (!secretKey) {
-      throw new Error(&#x27;STRIPE_SECRET_KEY is not defined&#x27;);
-    }
-    const stripe &#x3D; new Stripe(secretKey, {
-      apiVersion: &#x27;2025-04-30.basil&#x27;,
-    });
+    if (!secretKey) throw new Error(&#x27;STRIPE_SECRET_KEY is not defined&#x27;);
+    const stripe &#x3D; new Stripe(secretKey, { apiVersion: &#x27;2025-04-30.basil&#x27; });
 
     // 1. Récupérer la session Stripe
     const stripeSession &#x3D; await stripe.checkout.sessions.retrieve(sessionId);
 
-    // 2. Vérifier que le paiement est effectué
-    if (stripeSession.payment_status !&#x3D;&#x3D; &#x27;paid&#x27;) {
-      throw this.responseService.badRequest([&#x27;Payment not completed.&#x27;]);
-    }
-
-    // 3. Anti-double création
-    let paymentGroup: any &#x3D; await this.prisma.paymentGroup.findUnique({
-      where: { transactionId: sessionId },
-      include: { payments: true }
-    });
-    if (paymentGroup) {
-      return this.responseService.success(
-        { paymentGroup },
-        &#x27;Paiement déjà enregistré.&#x27;
-      );
-    }
-
-    // 4. Extraire les metadata Stripe
+    // 2. Vérifier les metadata
     const metadata &#x3D; stripeSession.metadata;
-    if (!metadata || !metadata.userId || !metadata.appointmentIds || !metadata.paymentModeId) {
-      throw this.responseService.badRequest([&#x27;Metadata manquante dans la session Stripe.&#x27;]);
+    if (
+      !metadata ||
+      !metadata.userId ||
+      !metadata.appointmentIds ||
+      !metadata.paymentModeId ||
+      !metadata.amounts
+    ) {
+      return this.responseService.badRequest([
+        &#x27;Metadata Stripe manquante ou incomplète.&#x27;,
+      ]);
     }
+
     const userId &#x3D; metadata.userId;
     const appointmentIds &#x3D; metadata.appointmentIds.split(&#x27;,&#x27;);
     const paymentModeId &#x3D; metadata.paymentModeId;
-
-    // 5. Vérifier les appointments concernés existent et pas supprimés
-    const appointments &#x3D; await this.prisma.appointment.findMany({
-      where: { id: { in: appointmentIds }, deletedAt: null },
-    });
-
-    if (!appointments || appointments.length &#x3D;&#x3D;&#x3D; 0) {
-      throw this.responseService.notFound(&#x27;Aucun rendez-vous trouvé pour cette transaction.&#x27;);
-    }
-
-    // 6. Calcul du total payé (Stripe retourne en centimes)
+    const amounts &#x3D; metadata.amounts
+      ? metadata.amounts.split(&#x27;,&#x27;).map((n: string) &#x3D;&gt; parseFloat(n))
+      : [];
     const totalAmount &#x3D; stripeSession.amount_total! / 100;
 
-    // 7. Création du PaymentGroup (SANS paymentModeId !)
-    paymentGroup &#x3D; await this.prisma.paymentGroup.create({
+    // 3. Vérifier si PaymentGroup existe déjà
+    let paymentGroup &#x3D; await this.prisma.paymentGroup.findUnique({
+      where: { transactionId: sessionId },
+      include: { payments: true },
+    });
+
+    if (paymentGroup) {
+      // Anti-double paiement
+      return this.responseService.success(
+        { paymentGroup },
+        &#x27;Paiement déjà enregistré pour ce Stripe session_id.&#x27;,
+      );
+    }
+
+    // 4. Créer le PaymentGroup (retourne SANS la relation)
+    const createdPaymentGroup &#x3D; await this.prisma.paymentGroup.create({
       data: {
         userId,
         transactionId: sessionId,
@@ -773,41 +801,36 @@ export class PaymentService {
       },
     });
 
-    if (!paymentGroup) {
-      throw this.responseService.notFound(&#x27;Erreur création PaymentGroup&#x27;);
-    }
-
-    // 8. Création des paiements individuels AVEC paymentModeId
-    console.log(&#x27;&gt;&gt;&gt; [DEBUG SERVICE] sessionId transmis à la création Payment :&#x27;, sessionId);
+    // 5. Créer les paiements individuels
     await Promise.all(
-      appointments.map((appointment) &#x3D;&gt;
-        this.prisma.payment.create({
+      appointmentIds.map(async (appointmentId: string, idx: number) &#x3D;&gt; {
+        const amount &#x3D;
+          amounts.length &#x3D;&#x3D;&#x3D; appointmentIds.length
+            ? amounts[idx]
+            : totalAmount / appointmentIds.length;
+        await this.prisma.payment.create({
           data: {
             userId,
-            appointmentId: appointment.id,
-            paymentModeId: paymentModeId,
-            amount: totalAmount / appointments.length,
+            appointmentId,
+            paymentModeId,
+            amount,
             status: PaymentStatus.PAID,
-            paymentGroupId: paymentGroup.id,
-            transactionId: sessionId, // &lt;&#x3D;&#x3D; EXCLUSIVEMENT camelCase !
+            paymentGroupId: createdPaymentGroup.id,
+            transactionId: sessionId,
           },
-        })
-      ),
+        });
+      }),
     );
 
-    // 9. Recharge le PaymentGroup AVEC tous ses paiements
-    paymentGroup &#x3D; await this.prisma.paymentGroup.findUnique({
-      where: { id: paymentGroup.id },
+    // 6. Recharge PaymentGroup AVEC la relation payments
+    const paymentGroupWithPayments &#x3D; await this.prisma.paymentGroup.findUnique({
+      where: { id: createdPaymentGroup.id },
       include: { payments: true },
     });
 
-    // Debug logs : à enlever en prod
-    const allPayments &#x3D; await this.prisma.payment.findMany({ where: { paymentGroupId: paymentGroup.id }});
-    console.log(&#x27;&gt;&gt;&gt; [DEBUG SERVICE] Payments juste après création :&#x27;, allPayments);
-
     return this.responseService.success(
-      { paymentGroup },
-      &#x27;Paiement validé et enregistré.&#x27;
+      { paymentGroup: paymentGroupWithPayments },
+      &#x27;Paiement validé et enregistré.&#x27;,
     );
   }
 }

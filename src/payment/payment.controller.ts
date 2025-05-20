@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param, Query } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, Query, Res } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import {
@@ -10,6 +10,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { Public } from '../common/decorator/public.decorator';
+import { Response } from 'express';
 
 @ApiTags('Payments')
 @ApiBearerAuth('access-token')
@@ -60,11 +61,18 @@ export class PaymentController {
 
   // === ATTENTION À L'ORDRE : /success AVANT :transactionId ===
   @Get('/success')
-  @ApiOperation({ summary: 'Handle Stripe success redirect (dev/test)' })
-  @ApiResponse({ status: 200, description: 'Paiement validé avec succès.' })
-  async handleSuccess(@Query('session_id') sessionId: string) {
-    console.log('>>> [DEBUG CONTROLLER] session_id reçu en query :', sessionId);
-    return this.paymentService.handleStripeSuccess(sessionId);
+  async handleSuccess(
+    @Query('session_id') sessionId: string,
+    @Res() res: Response,
+  ) {
+    await this.paymentService.handleStripeSuccess(sessionId); // logique backend, pas de return
+    // Sert le fichier statique
+    res.sendFile('payment-success.html', { root: process.cwd() + '/public' });
+  }
+
+  @Get('/cancel')
+  handleCancel(@Res() res: Response) {
+    res.sendFile('payment-cancel.html', { root: process.cwd() + '/public' });
   }
 
   @Get(':transactionId')

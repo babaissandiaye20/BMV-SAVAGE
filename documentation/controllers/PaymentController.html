@@ -176,8 +176,9 @@
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
+                                <a href="#handleCancel" >handleCancel</a>
+                            </li>
+                            <li>
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#handleSuccess" >handleSuccess</a>
@@ -233,8 +234,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/payment/payment.controller.ts:38</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/payment/payment.controller.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -312,8 +313,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="48"
-                                    class="link-to-prism">src/payment/payment.controller.ts:48</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/payment/payment.controller.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -363,8 +364,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="82"
-                                    class="link-to-prism">src/payment/payment.controller.ts:82</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/payment/payment.controller.ts:92</a></div>
                         </td>
                     </tr>
 
@@ -444,8 +445,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">src/payment/payment.controller.ts:64</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/payment/payment.controller.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -495,11 +496,84 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleSuccess"></a>
+                    <a name="handleCancel"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
+                        <span ><b>handleCancel</b></span>
+                        <a href="#handleCancel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleCancel(res: <a href="../interfaces/Response.html" target="_self">Response</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;/cancel&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="74"
+                                    class="link-to-prism">src/payment/payment.controller.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>res</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Response.html" target="_self" >Response</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleSuccess"></a>
+                    <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier">Async</span>
                         <span ><b>handleSuccess</b></span>
@@ -510,7 +584,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleSuccess(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>handleSuccess(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, res: <a href="../interfaces/Response.html" target="_self">Response</a>)</code>
                 </td>
             </tr>
 
@@ -518,14 +592,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;/success&#x27;)<br />@ApiOperation({summary: &#x27;Handle Stripe success redirect (dev/test)&#x27;})<br />@ApiResponse({status: 200, description: &#x27;Paiement validé avec succès.&#x27;})<br />@Get(&#x27;/success&#x27;)<br /></code>
+                    <code>@Get(&#x27;/success&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">src/payment/payment.controller.ts:90</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/payment/payment.controller.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -557,11 +631,23 @@
 
 
                                         </tr>
+                                        <tr>
+                                                <td>res</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Response.html" target="_self" >Response</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -575,14 +661,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  Controller,
-  Post,
-  Get,
-  Body,
-  Param,
-  Query,
-} from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Post, Get, Body, Param, Query, Res } from &#x27;@nestjs/common&#x27;;
 import { PaymentService } from &#x27;./payment.service&#x27;;
 import { CreatePaymentDto } from &#x27;./dto/create-payment.dto&#x27;;
 import {
@@ -594,6 +673,7 @@ import {
   ApiParam,
 } from &#x27;@nestjs/swagger&#x27;;
 import { Public } from &#x27;../common/decorator/public.decorator&#x27;;
+import { Response } from &#x27;express&#x27;;
 
 @ApiTags(&#x27;Payments&#x27;)
 @ApiBearerAuth(&#x27;access-token&#x27;)
@@ -642,6 +722,22 @@ export class PaymentController {
     return this.paymentService.getTransactionsByUser(userId);
   }
 
+  // &#x3D;&#x3D;&#x3D; ATTENTION À L&#x27;ORDRE : /success AVANT :transactionId &#x3D;&#x3D;&#x3D;
+  @Get(&#x27;/success&#x27;)
+  async handleSuccess(
+    @Query(&#x27;session_id&#x27;) sessionId: string,
+    @Res() res: Response,
+  ) {
+    await this.paymentService.handleStripeSuccess(sessionId); // logique backend, pas de return
+    // Sert le fichier statique
+    res.sendFile(&#x27;payment-success.html&#x27;, { root: process.cwd() + &#x27;/public&#x27; });
+  }
+
+  @Get(&#x27;/cancel&#x27;)
+  handleCancel(@Res() res: Response) {
+    res.sendFile(&#x27;payment-cancel.html&#x27;, { root: process.cwd() + &#x27;/public&#x27; });
+  }
+
   @Get(&#x27;:transactionId&#x27;)
   @ApiOperation({
     summary: &#x27;Get transaction by ID (UUID interne ou Stripe session_id)&#x27;,
@@ -659,16 +755,6 @@ export class PaymentController {
   async getTransaction(@Param(&#x27;transactionId&#x27;) transactionId: string) {
     return this.paymentService.getTransaction(transactionId);
   }
-
-  @Get(&#x27;/success&#x27;)
-  @ApiOperation({ summary: &#x27;Handle Stripe success redirect (dev/test)&#x27; })
-  @ApiResponse({ status: 200, description: &#x27;Paiement validé avec succès.&#x27; })
-  @Get(&#x27;/success&#x27;)
-  async handleSuccess(@Query(&#x27;session_id&#x27;) sessionId: string) {
-    console.log(&#x27;&gt;&gt;&gt; [DEBUG CONTROLLER] session_id reçu en query :&#x27;, sessionId);
-    return this.paymentService.handleStripeSuccess(sessionId);
-  }
-
 }
 </code></pre>
     </div>

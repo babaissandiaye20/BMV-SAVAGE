@@ -1,8 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsUUID, IsOptional } from 'class-validator';
 import { Exists } from '../../common/decorator/validators/exists.decorator';
+import { randomUUID } from 'crypto';
 
 export class CreateAppointmentDto {
+  @ApiProperty({
+    example: 'appointment-uuid-generated-by-flutter',
+    description: 'UUID généré côté client (facultatif)',
+    required: false,
+  })
+  @IsOptional()
+  id?: string;
+
   @ApiProperty({ example: 'uuid-user', description: "ID de l'utilisateur" })
   @IsUUID()
   @IsNotEmpty()
@@ -53,6 +62,7 @@ export class CreateAppointmentDto {
   @IsString()
   @IsOptional()
   location?: string;
+
   @IsOptional()
   @IsString()
   @ApiProperty({

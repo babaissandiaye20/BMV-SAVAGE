@@ -51,12 +51,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.useStaticAssets(join(__dirname, '..', 'documentation'), {
-    prefix: '/docs',
-  });
-  app.getHttpAdapter().get('/docs', (req, res: Response) => {
-    res.redirect('/docs/index.html');
-  });
+  app.useStaticAssets(join(__dirname, '..', 'public'));
 
   await app.listen(process.env.PORT ?? 3000);
 }

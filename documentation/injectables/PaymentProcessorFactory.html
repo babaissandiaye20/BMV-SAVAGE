@@ -161,7 +161,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/payment/payment-processor.factory.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/payment/payment-processor.factory.ts:6</a></div>
                             </td>
                         </tr>
 
@@ -224,8 +224,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="10"
-                                    class="link-to-prism">src/payment/payment-processor.factory.ts:10</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="9"
+                                    class="link-to-prism">src/payment/payment-processor.factory.ts:9</a></div>
                         </td>
                     </tr>
 
@@ -281,7 +281,6 @@
 import { StripeService } from &#x27;./stripe/stripe.service&#x27;;
 import { PaymentProcessor } from &#x27;./payment-processor.interface&#x27;;
 
-
 @Injectable()
 export class PaymentProcessorFactory {
   constructor(private readonly stripeService: StripeService) {}
@@ -290,7 +289,6 @@ export class PaymentProcessorFactory {
     // @ts-ignore
     switch (provider.toLowerCase()) {
       case &#x27;stripe&#x27;:
-
         return this.stripeService;
 
       default:

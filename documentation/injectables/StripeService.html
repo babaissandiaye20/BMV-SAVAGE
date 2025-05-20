@@ -222,26 +222,82 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>charge()</code>
+                    <code>charge(amount?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, currency?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, paymentDetails?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="20"
-                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:20</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:22</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Stripe Checkout workflow : pas de &quot;charge&quot; direct.</p>
+</div>
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>amount</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>currency</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>paymentDetails</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
                             <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -268,14 +324,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:46</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:63</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Crée une session Checkout Stripe pour paiement.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -397,14 +455,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="40"
-                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:40</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:54</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Récupération d&#39;une session Checkout Stripe.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -415,6 +475,7 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -429,6 +490,10 @@
                                             </td>
 
 
+                                            <td>
+                                                    <p>id de la session Checkout (ex: cs_test_xxx)</p>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -466,14 +531,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="27"
-                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:27</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/payment/stripe/stripe.service.ts:37</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Refund d&#39;une transaction Stripe Checkout.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -484,6 +551,7 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -498,6 +566,10 @@
                                             </td>
 
 
+                                            <td>
+                                                    <p>l&#39;id de PaymentIntent ou Checkout Session</p>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -592,38 +664,55 @@ export class StripeService implements PaymentProcessor {
     if (!process.env.STRIPE_SECRET_KEY) {
       throw new Error(&#x27;STRIPE_SECRET_KEY is not defined&#x27;);
     }
-
     this.stripe &#x3D; new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: &#x27;2025-04-30.basil&#x27;,
     });
   }
 
-  async charge(): Promise&lt;{
+  /**
+   * Stripe Checkout workflow : pas de &quot;charge&quot; direct.
+   */
+  async charge(
+    amount?: number,
+    currency?: string,
+    paymentDetails?: any,
+  ): Promise&lt;{
     transactionId: string;
     status: &#x27;PAID&#x27; | &#x27;FAILED&#x27;;
   }&gt; {
     throw new Error(&#x27;charge method is disabled for Stripe Checkout&#x27;);
   }
 
+  /**
+   * Refund d&#x27;une transaction Stripe Checkout.
+   * @param transactionId l&#x27;id de PaymentIntent ou Checkout Session
+   */
   async refund(transactionId: string): Promise&lt;boolean&gt; {
     try {
+      // On tente avec l&#x27;id comme payment_intent (Stripe PaymentIntent ID)
       const refund &#x3D; await this.stripe.refunds.create({
         payment_intent: transactionId,
       });
       return refund.status &#x3D;&#x3D;&#x3D; &#x27;succeeded&#x27;;
     } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       this.logger.error(&#x60;Refund failed: ${error.message}&#x60;);
       return false;
     }
   }
 
+  /**
+   * Récupération d&#x27;une session Checkout Stripe.
+   * @param transactionId id de la session Checkout (ex: cs_test_xxx)
+   */
   async getTransactionDetails(
     transactionId: string,
   ): Promise&lt;Stripe.Checkout.Session&gt; {
     return this.stripe.checkout.sessions.retrieve(transactionId);
   }
 
+  /**
+   * Crée une session Checkout Stripe pour paiement.
+   */
   async createCheckoutSession(
     amount: number,
     currency: string,
@@ -631,13 +720,14 @@ export class StripeService implements PaymentProcessor {
     cancelUrl: string,
     metadata: Record&lt;string, string&gt; &#x3D; {},
   ): Promise&lt;{ sessionId: string; url: string }&gt; {
+    // Stripe exige les montants en CENTIMES (ex: 5€ &#x3D; 500)
     const session &#x3D; await this.stripe.checkout.sessions.create({
       payment_method_types: [&#x27;card&#x27;],
       line_items: [
         {
           price_data: {
             currency,
-            unit_amount: Math.round(amount * 100),
+            unit_amount: Math.round(amount * 100), // Stripe &#x3D; centimes
             product_data: { name: &#x27;Paiement Rendez-vous&#x27; },
           },
           quantity: 1,
@@ -646,7 +736,7 @@ export class StripeService implements PaymentProcessor {
       mode: &#x27;payment&#x27;,
       success_url: &#x60;${successUrl}?session_id&#x3D;{CHECKOUT_SESSION_ID}&#x60;,
       cancel_url: cancelUrl,
-      metadata, // { userId: ..., appointmentIds: ... }
+      metadata, // { userId, appointmentIds, etc. }
     });
 
     return {

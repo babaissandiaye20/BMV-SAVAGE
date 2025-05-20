@@ -52,4 +52,5 @@ export class CreateGuestAppointmentDto {
   @IsOptional()
   location?: string;
   issuesDate: string | null;
+  id: string;
 }

@@ -88,6 +88,7 @@ export class PaymentService {
         userId: dto.userId,
         appointmentIds: dto.appointmentIds.join(','),
         paymentModeId: dto.paymentModeId,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         amounts: dto.amounts.join(','), // pour mapping montant/rdv
       }
     );
@@ -152,7 +153,7 @@ export class PaymentService {
       const payments = await this.prisma.payment.findMany({});
       console.log('Toutes les transactions en base:', payments.map(p => ({
         id: p.id,
-        transactionId: p.transactionId
+          transactionId: p.transactionId,
       })));
       throw this.responseService.notFound('Transaction not found.');
     }
@@ -170,13 +171,12 @@ export class PaymentService {
   async handleStripeSuccess(sessionId: string) {
     const secretKey = process.env.STRIPE_SECRET_KEY;
     if (!secretKey) throw new Error('STRIPE_SECRET_KEY is not defined');
-
     const stripe = new Stripe(secretKey, { apiVersion: '2025-04-30.basil' });
 
-    // 1. Récupère la session Stripe
+    // 1. Récupérer la session Stripe
     const stripeSession = await stripe.checkout.sessions.retrieve(sessionId);
 
-    // 2. Vérifie les metadata
+    // 2. Vérifier les metadata
     const metadata = stripeSession.metadata;
     if (
       !metadata ||
@@ -198,8 +198,22 @@ export class PaymentService {
       : [];
     const totalAmount = stripeSession.amount_total! / 100;
 
-    // 3. Création PaymentGroup
-    const paymentGroup = await this.prisma.paymentGroup.create({
+    // 3. Vérifier si PaymentGroup existe déjà
+    let paymentGroup = await this.prisma.paymentGroup.findUnique({
+      where: { transactionId: sessionId },
+      include: { payments: true },
+    });
+
+    if (paymentGroup) {
+      // Anti-double paiement
+      return this.responseService.success(
+        { paymentGroup },
+        'Paiement déjà enregistré pour ce Stripe session_id.',
+      );
+    }
+
+    // 4. Créer le PaymentGroup (retourne SANS la relation)
+    const createdPaymentGroup = await this.prisma.paymentGroup.create({
       data: {
         userId,
         transactionId: sessionId,
@@ -208,7 +222,7 @@ export class PaymentService {
       },
     });
 
-    // 4. Création des paiements individuels
+    // 5. Créer les paiements individuels
     await Promise.all(
       appointmentIds.map(async (appointmentId: string, idx: number) => {
         const amount =
@@ -222,22 +236,22 @@ export class PaymentService {
             paymentModeId,
             amount,
             status: PaymentStatus.PAID,
-            paymentGroupId: paymentGroup.id,
+            paymentGroupId: createdPaymentGroup.id,
             transactionId: sessionId,
           },
         });
       }),
     );
 
-    // 5. Recharge pour la réponse
+    // 6. Recharge PaymentGroup AVEC la relation payments
     const paymentGroupWithPayments = await this.prisma.paymentGroup.findUnique({
-      where: { id: paymentGroup.id },
+      where: { id: createdPaymentGroup.id },
       include: { payments: true },
     });
 
     return this.responseService.success(
       { paymentGroup: paymentGroupWithPayments },
-      'Paiement validé et enregistré.'
+      'Paiement validé et enregistré.',
     );
   }
 }
