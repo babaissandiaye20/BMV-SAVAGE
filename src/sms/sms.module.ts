@@ -1,23 +1,38 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MailerModule } from '@nestjs-modules/mailer';
 import { TwilioService } from './twilio/twilio.service';
-import { WhatsAppService } from './whatsapp/whatsapp.service';
-import { EvolutionApiService } from './evolution-api/evolution-api.service';
-import { SMS_SERVICE } from './sms.interface';
+import { EmailService } from './email/email.service';
 import { RedisService } from '../redis/redis.service';
+import { SMS_SERVICE } from './sms.interface';
+import { emailConfig } from '../config/email.config';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [
+    ConfigModule,
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      ...emailConfig,
+    }),
+  ],
   providers: [
-    {
-      provide: SMS_SERVICE,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      useClass: TwilioService,
-    },
     RedisService,
     TwilioService,
-    EvolutionApiService,
+    EmailService,
+    {
+      provide: SMS_SERVICE,
+      useFactory: (
+        configService: ConfigService,
+        emailService: EmailService,
+        twilioService: TwilioService,
+      ) => {
+        const provider = configService.get<string>('SMS_PROVIDER', 'email');
+        console.log(`SMS Provider configuré: ${provider}`);
+        return provider === 'twilio' ? twilioService : emailService;
+      },
+      inject: [ConfigService, EmailService, TwilioService],
+    },
   ],
-  exports: [SMS_SERVICE],
+  exports: [SMS_SERVICE, RedisService, EmailService, TwilioService],
 })
 export class SmsModule {}

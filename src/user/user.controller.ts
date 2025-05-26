@@ -63,15 +63,16 @@ export class UserController {
   }
 
   @Post(':id/send-otp')
-  @ApiOperation({ summary: 'Send OTP to user phone' })
+  @ApiOperation({ summary: 'Send OTP to user phone or email' })
   @ApiResponse({ status: 200, description: 'OTP sent to user.' })
   sendOtp(@Param('id') id: string) {
     return this.usersService.sendPhoneVerificationOtp(id);
   }
 
   @Post('verify-otp')
-  @ApiOperation({ summary: 'Verify OTP and activate phone' })
-  @ApiResponse({ status: 200, description: 'Phone verified.' })
+  @ApiOperation({ summary: 'Verify OTP and activate phone or email' })
+  @ApiResponse({ status: 200, description: 'Phone or email verified.' })
+  @ApiBody({ type: VerifyOtpDto })
   verifyOtp(@Body() dto: VerifyOtpDto) {
     return this.usersService.verifyPhoneOtp(dto);
   }

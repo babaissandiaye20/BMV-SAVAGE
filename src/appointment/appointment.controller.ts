@@ -27,6 +27,7 @@ export class AppointmentController {
     return this.appointmentService.create(createAppointmentDto);
   }
 
+
   @Public()
   @Post('guest')
   @ApiOperation({ summary: 'Create a new appointment as a guest' })
@@ -88,5 +89,11 @@ export class AppointmentController {
     return this.appointmentService.findPendingAppointmentsWithoutPayment(
       userId,
     );
+  }
+  @Get('user/:userId/paid')
+  @ApiOperation({ summary: 'Pending appointments without payments returned' })
+  @ApiResponse({ status: 200, description: 'Return paid appointments for the user' })
+  getPaidAppointments(@Param('userId') userId: string) {
+    return this.appointmentService.findPaidAppointmentsByUserId(userId);
   }
 }

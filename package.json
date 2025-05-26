@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "^2.0.2",
+    "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -33,6 +34,7 @@
     "@nestjs/swagger": "^11.1.5",
     "@nestjs/websockets": "^11.1.0",
     "@prisma/client": "^6.6.0",
+    "aws-sdk": "^2.1692.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
@@ -50,6 +52,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.26",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@nestjs/cli": "^11.0.0",
@@ -76,8 +79,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0",
-    "@compodoc/compodoc":"^1.1.26"
+    "typescript-eslint": "^8.20.0"
   },
   "jest": {
     "moduleFileExtensions": [

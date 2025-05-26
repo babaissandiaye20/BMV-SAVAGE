@@ -58,7 +58,11 @@ export class PaymentController {
   async getTransactionsByUser(@Param('userId') userId: string) {
     return this.paymentService.getTransactionsByUser(userId);
   }
-
+  @Post('intent')
+  @ApiOperation({ summary: 'Create Stripe PaymentIntent (NEW)' })
+  async createPaymentIntent(@Body() dto: CreatePaymentDto) {
+    return this.paymentService.createPaymentIntent(dto);
+  }
   // === ATTENTION À L'ORDRE : /success AVANT :transactionId ===
   @Get('/success')
   async handleSuccess(

@@ -4,6 +4,8 @@ import {
   IsString,
   MinLength,
   IsPhoneNumber,
+  IsOptional,
+  IsUUID,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Unique } from '../../common/decorator/validators/unique.decorator';
@@ -42,4 +44,13 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(6)
   password: string;
+
+  @ApiProperty({
+    example: 'uuid-of-role',
+    description: 'ID du rôle (optionnel, par défaut CLIENT)',
+    required: false,
+  })
+  @IsOptional()
+  @IsUUID()
+  roleId?: string;
 }

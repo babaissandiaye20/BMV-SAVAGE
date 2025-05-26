@@ -40,6 +40,8 @@ interface AuthenticatedRequest extends Request {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
+    roleId: string | null
+
   };
 }
 

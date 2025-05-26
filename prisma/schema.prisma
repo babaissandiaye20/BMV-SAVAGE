@@ -14,17 +14,29 @@ model User {
   lastName        String
   phone           String         @unique
   password        String
+  roleId          String? // Nullable - si null, prend le rôle CLIENT par défaut
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
   deletedAt       DateTime?
   codeOtp         String?
   isPhoneVerified Boolean        @default(false)
+  role            Role?          @relation(fields: [roleId], references: [id])
   appointments    Appointment[]
   documents       Document[]
   messages        Message[]
   payments        Payment[]
   RefreshToken    RefreshToken[]
   PaymentGroup    PaymentGroup[]
+}
+
+model Role {
+  id          String    @id @default(uuid())
+  name        String    @unique // CLIENT, ADMIN, etc.
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  users       User[]
 }
 
 model Document {

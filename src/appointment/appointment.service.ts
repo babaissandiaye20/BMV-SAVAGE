@@ -74,7 +74,7 @@ export class AppointmentService {
         userId,
         deletedAt: null,
       },
-      include: { payments: true },
+      include: { payments: false },
     });
 
     return this.responseService.success(
@@ -82,6 +82,7 @@ export class AppointmentService {
       'Appointments for user retrieved.',
     );
   }
+
 
   async cancel(id: string) {
     const appointment = await this.prisma.appointment.update({
@@ -172,14 +173,37 @@ export class AppointmentService {
         status: AppointmentStatus.PENDING,
         deletedAt: null,
         payments: {
-          none: {}, // aucun paiement associé
+          none: {}, // ça signifie : aucun paiement associé
         },
+      },
+      include: {
+        payments: true,
       },
     });
 
     return this.responseService.success(
       appointments,
       'Pending appointments without payments retrieved.',
+    );
+  }
+  async findPaidAppointmentsByUserId(userId: string) {
+    const appointments = await this.prisma.appointment.findMany({
+      where: {
+        userId,
+        deletedAt: null,
+        status: AppointmentStatus.PENDING,
+        payments: {
+          some: {}, // This means: at least one payment is associated
+        },
+      },
+      include: {
+        payments: true,
+      },
+    });
+
+    return this.responseService.success(
+      appointments,
+      'Paid appointments for user retrieved.',
     );
   }
 }

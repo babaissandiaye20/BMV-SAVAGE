@@ -26,8 +26,8 @@ import { PaymentModule } from './payment/payment.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { AppointmentController } from './appointment/appointment.controller';
 import { AppointmentService } from './appointment/appointment.service';
-
-import { FirebaseAdminService } from './firebase/firebase-admin/firebase-admin.service';
+import { SmsServicefactoryService } from './sms/sms-servicefactory/sms-servicefactory.service';
+import { RoleModule } from './role/role.module';
 
 
 @Module({
@@ -51,6 +51,7 @@ import { FirebaseAdminService } from './firebase/firebase-admin/firebase-admin.s
     DocumentModule,
     PaymentModule,
     AppointmentModule,
+    RoleModule,
   ],
   controllers: [AppController, PaymentModeController, AppointmentController],
   providers: [
@@ -65,8 +66,7 @@ import { FirebaseAdminService } from './firebase/firebase-admin/firebase-admin.s
     PaymentModeService,
     UploadService,
     DocumentService,
-    AppointmentService,
-    FirebaseAdminService,
+    AppointmentService
   ],
 })
 export class AppModule {}
